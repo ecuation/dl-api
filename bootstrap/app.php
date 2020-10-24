@@ -46,6 +46,7 @@ $app->register(\Thedevsaddam\LumenRouteList\LumenRouteListServiceProvider::class
 $app->register(\KitLoong\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings

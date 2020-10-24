@@ -11,8 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if(in_array(env('APP_ENV'), ['testing', 'local'])) {
-            $this->call('UsersTableSeeder');
-        }
+        // if(in_array(env('APP_ENV'), ['testing', 'local'])) {
+            $this->call(UsersTableSeeder::class);
+            //$this->call(EmployeesSQLSeeder::class);
+        // }
     }
 }
