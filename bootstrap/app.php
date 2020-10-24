@@ -41,8 +41,9 @@ $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->configure('auth');
 \Dusterio\LumenPassport\LumenPassport::routes($app, ['prefix' => 'v1/oauth']);
-
 $app->register(\Thedevsaddam\LumenRouteList\LumenRouteListServiceProvider::class);
+
+$app->register(\KitLoong\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
 
 
 /*
