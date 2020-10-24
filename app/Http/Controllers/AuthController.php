@@ -33,7 +33,7 @@ class AuthController extends Controller
         $data['first_name'] =  $user->first_name;
         $data['last_name'] =  $user->last_name;
 
-         
+
         return response()->json([
             'user' => new UserResource($user),
             'message' => 'Successfully created user!'
