@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
+
+    public $main_user_test;
     /**
      * Creates the application.
      *
@@ -21,5 +23,17 @@ abstract class TestCase extends BaseTestCase
 
         Artisan::call('migrate:refresh');
         Artisan::call('db:seed');
+        Artisan::call('passport:install');
+        $this->setMainUserTest();
+    }
+
+    public function setMainUserTest()
+    {
+        $this->main_user_test = [
+            "first_name" => "John",
+            "last_name" => "Doe",
+            "email" => 'john.doe@test.dev',
+            "password" => "secret123",
+        ];
     }
 }
