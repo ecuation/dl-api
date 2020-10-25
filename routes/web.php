@@ -12,7 +12,6 @@
 */
 
 $router->get('/', function () use ($router) {
-
     /*dd(\App\Department::find('d009')->managers);
     return $router->app->version();*/
 
@@ -22,15 +21,14 @@ $router->get('/', function () use ($router) {
         echo $manager->emp_no . '<br>';
     }
 
-
     dd(\App\Employee::first()->salaries);
 });
 
-$router->post('/signup', [
-    'uses' => 'AuthController@signup'
-]);
 
-$router->post('/login', [
-    'uses' => 'AuthController@login'
-]);
-
+$router->group(['prefix' => 'api/v1'], function() use (&$router)
+{
+    $router->post('/signup', [
+        'uses' => 'AuthController@signup',
+        'as' => 'auth.register'
+    ]);
+});

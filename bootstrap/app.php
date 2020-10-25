@@ -32,22 +32,21 @@ $app->withEloquent();
 // Enable auth middleware (shipped with Lumen)
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
-]);
-
-$app->routeMiddleware([
     'client.credentials' => Laravel\Passport\Http\Middleware\CheckClientCredentials::class,
 ]);
+$app->middleware([
+    Fruitcake\Cors\HandleCors::class
+]);
+
 $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->configure('auth');
 $app->configure('database');
 \Dusterio\LumenPassport\LumenPassport::routes($app, ['prefix' => 'v1/oauth']);
 $app->register(\Thedevsaddam\LumenRouteList\LumenRouteListServiceProvider::class);
-
 $app->register(\KitLoong\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
-
-
-
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
+$app->configure('cors');
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
