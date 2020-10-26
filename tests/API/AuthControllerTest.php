@@ -8,16 +8,6 @@ use App\User;
 
 class AuthControllerTest extends \TestCase
 {
-    public function createMainUser()
-    {
-        $response = $this->json('POST', route('auth.register'), $this->main_user_test, [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json'
-        ]);
-
-        return $response;
-    }
-
     public function testRegister()
     {
         $response = $this->createMainUser();
