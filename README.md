@@ -42,8 +42,21 @@ Client secret: gOV3kfHdI2t6soli5Fhi3n16AqgrAwcTU8Ip2e1G
 ```
 Note: Save the above credentials in your clipboard from the client with the ID: 2 
 (You will need these credentials to set it in your .env frontend project file
-in order to make the correct Client->API connection)
+in order to make the correct WebClient->API connection)
 
-## License
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Last backend setup step: Create the default admin user just by running the following seeder command
+
+```sh
+$ php artisan db:seed --class=MainUserSeeder
+```
+
+Now you can start with the frontend project setup.
+
+## TDD with phpunit
+
+All API endpoints has been developed applying TDD. To make these tests run, please execute the following command in your project root directory
+
+```sh
+$ vendor/bin/phpunit
+```

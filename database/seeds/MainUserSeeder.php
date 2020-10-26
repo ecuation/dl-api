@@ -16,6 +16,6 @@ class MainUserSeeder extends \Illuminate\Database\Seeder
         $user->save();
         $token = $user->createToken('docline')->accessToken;
 
-        dd($token);
+        $this->command->info('Admin user has been created successfully');
     }
 }
