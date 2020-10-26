@@ -5,9 +5,6 @@ namespace API;
 
 
 use App\Department;
-use App\Employee;
-use App\OauthClient;
-use App\Repositories\EmployeeRepo;
 use Carbon\Carbon;
 use Faker\Factory;
 

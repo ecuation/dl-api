@@ -4,7 +4,6 @@
 namespace API;
 
 use App\OauthClient;
-use App\User;
 
 class AuthControllerTest extends \TestCase
 {
