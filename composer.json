@@ -12,6 +12,7 @@
         "laravel/lumen-framework": "^7.0",
         "laravel/passport": "^9.3",
         "predis/predis": "^1.0",
+        "rennokki/laravel-eloquent-query-cache": "^2.4",
         "thedevsaddam/lumen-route-list": "^2.0"
     },
     "require-dev": {

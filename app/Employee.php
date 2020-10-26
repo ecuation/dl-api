@@ -5,11 +5,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 
 class Employee extends Model
 {
-    //use QueryCacheable;
-    protected $cacheFor = 180;
+    use QueryCacheable;
+    protected $cacheFor = 360;
 
     protected $table = 'employees';
 

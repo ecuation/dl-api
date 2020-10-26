@@ -27,7 +27,7 @@ class EmployeeRepo
             DB::raw('dept_manager.emp_no as manager_emp_no')
         )->join('dept_emp', 'dept_emp.emp_no', '=', 'employees.emp_no')
             ->join('dept_manager', 'dept_manager.dept_no', '=', 'dept_emp.dept_no')
-            ->distinct('employees.emp_no')
+            ->groupBy('employees.emp_no')
             ->orderBy('employee_hire_date', 'ASC');
     }
 
@@ -59,6 +59,8 @@ class EmployeeRepo
 
     public function searchByManager($managerId)
     {
-        $this->employees->where('dept_manager.emp_no', '=', $managerId);
+        $this->employees
+            ->where('dept_manager.emp_no', '=', $managerId)
+            ->where('employees.emp_no', '<>', $managerId);
     }
 }
