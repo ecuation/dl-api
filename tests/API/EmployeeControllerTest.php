@@ -6,6 +6,8 @@ namespace API;
 
 use App\Department;
 use App\Employee;
+use App\OauthClient;
+use App\Repositories\EmployeeRepo;
 use Carbon\Carbon;
 
 class EmployeeControllerTest extends \TestCase
@@ -28,27 +30,66 @@ class EmployeeControllerTest extends \TestCase
 
     public function mockEmployees()
     {
-        $employee = factory(\App\Employee::class)->create();
-        $employee->departmentsEmployees()->attach('d009', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
-        $employee->departmentsEmployees()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+        $employeeCustomerServices = factory(\App\Employee::class)->create();
+        $employeeCustomerServices->departmentsEmployees()->attach('d009', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
 
-        //dd($employee->departmentsEmployees->pluck('dept_name'));
+        $employeeDevelopment = factory(\App\Employee::class)->create([
+            'first_name' => 'Bill',
+            'last_name' => 'Gates'
+        ]);
+        $employeeDevelopment->departmentsEmployees()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+
+        $employeeDevelopment = factory(\App\Employee::class)->create([
+            'first_name' => 'Steve',
+            'last_name' => 'Wozniak'
+        ]);
+        $employeeDevelopment->departmentsEmployees()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
     }
 
     public function mockManagers()
     {
-        $employee = factory(\App\Employee::class)->create();
-        $employee->departmentsMangers()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
-        $employee->departmentsMangers()->attach('d002', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+        $managerCustomerServices = factory(\App\Employee::class)->create();
+        $managerCustomerServices->departmentsMangers()->attach('d009', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
 
-        dd($employee->departmentsMangers->pluck('dept_name'));
+        $managerDevelopment = factory(\App\Employee::class)->create();
+        $managerDevelopment->departmentsMangers()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+
+        return compact('managerCustomerServices', 'managerDevelopment');
+
     }
 
     public function testSearchEmployees()
     {
-        $response = $this->createMainUser();
+        $this->createMainUser();
         $this->mockDepartments();
         $this->mockEmployees();
-        $this->mockManagers();
+        $managers = $this->mockManagers();
+        $oauth_client = OauthClient::find(2);
+
+        $body = [
+            'username' => $this->main_user_test['email'],
+            'password' => $this->main_user_test['password'],
+            'client_id' => $oauth_client->id,
+            'client_secret' => $oauth_client->secret,
+            'grant_type' => 'password',
+            'scope' => '*'
+        ];
+
+        $response = $this->json('POST','v1/oauth/token', $body, [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
+        ]);
+
+        $decoded_res = json_decode($response->response->getContent());
+        $search_response = $this->json('GET', route('employees.index'), ['manager_no' => $managers['managerDevelopment']->emp_no], [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $decoded_res->access_token
+        ]);
+
+        $search_response->assertResponseStatus(200);
+
+        $decoded_search_res = json_decode($search_response->response->getContent());
+
+        $this->assertEquals($decoded_search_res->meta->total, 2);
     }
 }

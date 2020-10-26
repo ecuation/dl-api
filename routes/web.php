@@ -35,7 +35,8 @@ $router->group(['prefix' => 'api/v1'], function() use (&$router)
 
     $router->group(['middleware' => 'auth:api'], function() use (&$router) {
         $router->get('/employees', [
-            'uses' => 'EmployeeController@index'
+            'uses' => 'EmployeeController@index',
+            'as' => 'employees.index'
         ]);
     });
 });
