@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     protected $table = 'departments';
-
     protected $primaryKey = 'dept_no';
-
     public $incrementing = false;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'dept_no',
+        'dept_name'
+    ];
+
 
     public function managers()
     {

@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS dept_emp,
 
 DROP TABLE IF EXISTS employees;
 CREATE TABLE IF NOT EXISTS employees (
-    emp_no      INT             NOT NULL,
+    emp_no      INT             NOT NULL auto_increment,
     birth_date  DATE            NOT NULL,
     first_name  VARCHAR(14)     NOT NULL,
     last_name   VARCHAR(16)     NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS dept_emp (
 
 DROP TABLE IF EXISTS titles;
 CREATE TABLE IF NOT EXISTS titles (
-    emp_no      INT             NOT NULL,
+    emp_no      INT             NOT NULL auto_increment,
     title       VARCHAR(50)     NOT NULL,
     from_date   DATE            NOT NULL,
     to_date     DATE,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS titles (
 
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE IF NOT EXISTS salaries (
-    emp_no      INT             NOT NULL,
+    emp_no      INT             NOT NULL auto_increment,
     salary      INT             NOT NULL,
     from_date   DATE            NOT NULL,
     to_date     DATE            NOT NULL,

@@ -14,11 +14,11 @@ class CreateSalariesTable extends Migration
     public function up()
     {
         Schema::create('salaries', function (Blueprint $table) {
-            $table->integer('emp_no');
+            $table->increments('emp_no');
             $table->integer('salary');
             $table->date('from_date');
             $table->date('to_date');
-            $table->primary(['emp_no', 'from_date']);
+            // $table->primary(['emp_no', 'from_date']);
         });
     }
 
