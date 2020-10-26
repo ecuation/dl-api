@@ -14,5 +14,6 @@ class UsersTableSeeder extends Seeder
         foreach (range(1, 50) as $index) {
             factory(\App\User::class)->create();
         }
+
     }
 }

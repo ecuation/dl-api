@@ -3,12 +3,15 @@
 
 namespace App;
 
-
-use App\Salary;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 
 class Employee extends Model
 {
+    use QueryCacheable;
+    protected $cacheFor = 360;
+
     protected $table = 'employees';
 
     protected $primaryKey = 'emp_no';
@@ -47,5 +50,16 @@ class Employee extends Model
     public function titles()
     {
         return $this->hasMany(Title::class, 'emp_no');
+    }
+
+    public function scopeManagers($query) {
+        $query->select(
+            DB::raw('employees.first_name as employee_first_name'),
+            DB::raw('employees.last_name as employee_last_name'),
+            DB::raw('employees.emp_no as employee_no'),
+            DB::raw('employees.hire_date as employee_hire_date')
+        )->join('dept_manager', 'dept_manager.emp_no', '=', 'employees.emp_no')
+            ->distinct('employees.emp_no')
+            ->orderBy('employee_hire_date', 'ASC');
     }
 }

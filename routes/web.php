@@ -10,7 +10,12 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->group(['prefix' => 'api/v1'], function() use (&$router)
+$router->get('/', function () use ($router) {
+    $employee = \App\Employee::first()->salaries;
+    dd($employee);
+});
+
+$router->group(['prefix' => 'v1/api'], function() use (&$router)
 {
     $router->post('/signup', [
         'uses' => 'AuthController@signup',
@@ -21,6 +26,11 @@ $router->group(['prefix' => 'api/v1'], function() use (&$router)
         $router->get('/employees', [
             'uses' => 'EmployeeController@index',
             'as' => 'employees.index'
+        ]);
+
+        $router->get('/managers', [
+            'uses' => 'EmployeeController@getManagers',
+            'as' => 'employees.getManagers'
         ]);
     });
 });

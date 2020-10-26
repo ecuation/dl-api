@@ -11,7 +11,6 @@ class EmployeeRepo
 {
     public $employees;
 
-
     CONST SEARCH_METHODS = [
         'dateFrom' => 'searchByDateFrom',
         'dateTo' => 'searchByDateTo',
@@ -20,15 +19,16 @@ class EmployeeRepo
 
     public function __construct()
     {
-        $this->employees = Employee::select(
+        $this->employees = Employee::with(['salaries', 'titles'])->select(
             DB::raw('employees.first_name as employee_first_name'),
             DB::raw('employees.last_name as employee_last_name'),
             DB::raw('employees.emp_no as employee_no'),
+            DB::raw('employees.emp_no'),
             DB::raw('employees.hire_date as employee_hire_date'),
             DB::raw('dept_manager.emp_no as manager_emp_no')
         )->join('dept_emp', 'dept_emp.emp_no', '=', 'employees.emp_no')
             ->join('dept_manager', 'dept_manager.dept_no', '=', 'dept_emp.dept_no')
-            ->distinct('employees.emp_no')
+            ->groupBy('employees.emp_no')
             ->orderBy('employee_hire_date', 'ASC');
     }
 
@@ -60,6 +60,8 @@ class EmployeeRepo
 
     public function searchByManager($managerId)
     {
-        $this->employees->where('dept_manager.emp_no', '=', $managerId);
+        $this->employees
+            ->where('dept_manager.emp_no', '=', $managerId)
+            ->where('employees.emp_no', '<>', $managerId);
     }
 }

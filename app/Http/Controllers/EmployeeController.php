@@ -2,6 +2,7 @@
 
 
 namespace App\Http\Controllers;
+use App\Employee;
 use App\Http\Resources\EmployeeResource;
 use App\Repositories\EmployeeRepo;
 use Illuminate\Http\Request;
@@ -27,5 +28,12 @@ class EmployeeController extends Controller
         $employees = $query->employees->paginate(10);
 
         return EmployeeResource::collection($employees);
+    }
+
+
+    public function getManagers()
+    {
+        $managers = Employee::managers()->get();
+        return EmployeeResource::collection($managers);
     }
 }

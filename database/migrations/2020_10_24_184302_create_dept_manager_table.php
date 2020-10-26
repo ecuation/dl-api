@@ -14,7 +14,7 @@ class CreateDeptManagerTable extends Migration
     public function up()
     {
         Schema::create('dept_manager', function (Blueprint $table) {
-            $table->integer('emp_no');
+            $table->integer('emp_no')->unsigned();
             $table->char('dept_no', 4);
             $table->date('from_date');
             $table->date('to_date');
