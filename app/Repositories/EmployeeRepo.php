@@ -11,7 +11,6 @@ class EmployeeRepo
 {
     public $employees;
 
-
     CONST SEARCH_METHODS = [
         'dateFrom' => 'searchByDateFrom',
         'dateTo' => 'searchByDateTo',

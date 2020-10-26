@@ -10,16 +10,8 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-use App\Department;
 use App\Http\Resources\EmployeeResource;
-use \Illuminate\Support\Facades\DB;
-$router->get('/', function () use ($router) {
-    $employee = \App\Employee::managers()->get();
-    dd(EmployeeResource::collection($employee));
-});
-
-$router->group(['prefix' => 'api/v1'], function() use (&$router)
+$router->group(['prefix' => 'v1/api'], function() use (&$router)
 {
     $router->post('/signup', [
         'uses' => 'AuthController@signup',
