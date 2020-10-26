@@ -36,4 +36,17 @@ abstract class TestCase extends BaseTestCase
             "password" => "secret123",
         ];
     }
+
+    public function createMainUser()
+    {
+        $response = $this->json('POST', route('auth.register'), $this->main_user_test, [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
+        ]);
+
+        return [
+            'response' => $response,
+            'token' => json_decode($response->response->getContent())->token
+        ];
+    }
 }

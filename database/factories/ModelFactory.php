@@ -24,3 +24,13 @@ $factory->define(User::class, function (Faker $faker) {
         'password' => app('hash')->make('secret')
     ];
 });
+
+$factory->define(\App\Employee::class, function (Faker $faker) {
+    return [
+        'first_name' => $faker->name,
+        'last_name' => $faker->name,
+        'birth_date' => $faker->dateTimeBetween('-30 years', '-10 years'),
+        'hire_date' => $faker->dateTimeBetween('-10 years', '-1 years'),
+        'gender' => $faker->randomElement(['M', 'F'])
+    ];
+});

@@ -4,27 +4,16 @@
 namespace API;
 
 use App\OauthClient;
-use App\User;
 
 class AuthControllerTest extends \TestCase
 {
-    public function createMainUser()
-    {
-        $response = $this->json('POST', route('auth.register'), $this->main_user_test, [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json'
-        ]);
-
-        return $response;
-    }
-
     public function testRegister()
     {
         $response = $this->createMainUser();
+        $response['response']->assertResponseStatus(201);
 
-        $response->assertResponseStatus(201);
-        $this->assertEquals($response->response->original['user']->email, $this->main_user_test['email']);
-        $response->seeJsonStructure([
+        $this->assertEquals($response['response']->response->original['user']->email, $this->main_user_test['email']);
+        $response['response']->seeJsonStructure([
             'user',
             'message',
         ]);

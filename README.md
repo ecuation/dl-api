@@ -1,23 +1,49 @@
-# Lumen PHP Framework
+# Docline API with Lumen (Laravel microframework)
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+Simple API technical test using a prebuild MySQL database schema and data.
+### Installation
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+Download project, install dependencies with composer and db migrations .
+```sh
+$ git clone git@github.com:ecuation/docline-api.git docline-api.development
+$ cd docline-api.development
+$ composer install
+$ cp .env.example ./.env
+```
 
-## Official Documentation
+Copy .env file into the project and setup the necessary project and DB connection environment variables
+```sh
+$ cp .env.example ./.env
+```
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+Run Laravel migrations with artisan command
+```sh
+$ php artisan migrate
+```
 
-## Contributing
+Import the sample employees.sql database into the DB project
+```sh
+$ cd database/db_dump
+$ mysql -u yourDbUserName -p youDatabaseName < employees.sql
+```
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Install Laravel Passport
 
-## Security Vulnerabilities
+```sh
+$ php artisan passport:install
+```
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Previous command will return a very similar result as below:
+```sh
+Client ID: 1
+Client secret: 1cYyIHtKfPjJRHrOcngug8H03mvCOvSn05SUviYO
+Password grant client created successfully.
+Client ID: 2
+Client secret: gOV3kfHdI2t6soli5Fhi3n16AqgrAwcTU8Ip2e1G
+```
+Save credentials in your clipboard from the client with the ID: 2 
+(You will need these credentials to set it in your .env frontend project file
+in order to make the Client->API connection)
 
 ## License
 

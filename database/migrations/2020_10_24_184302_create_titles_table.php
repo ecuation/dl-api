@@ -14,11 +14,11 @@ class CreateTitlesTable extends Migration
     public function up()
     {
         Schema::create('titles', function (Blueprint $table) {
-            $table->integer('emp_no');
+            $table->increments('emp_no');
             $table->string('title', 50);
             $table->date('from_date');
             $table->date('to_date')->nullable();
-            $table->primary(['emp_no', 'title', 'from_date']);
+            // $table->primary(['emp_no', 'title', 'from_date']);
         });
     }
 
