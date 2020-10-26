@@ -5,6 +5,7 @@ namespace API;
 
 
 use App\Department;
+use App\Title;
 use Carbon\Carbon;
 use Faker\Factory;
 
@@ -58,6 +59,20 @@ class EmployeeControllerTest extends \TestCase
             'first_name' => 'Bill',
             'last_name' => 'Gates'
         ]);
+        $employeeDevelopment->titles()->create([
+            'emp_no' => $employeeDevelopment->emp_no,
+            'title' => $faker->jobTitle,
+            'from_date' => $faker->dateTimeBetween('-5 years'),
+            'to_date' => $faker->dateTimeBetween('-1 years'),
+        ]);
+
+        $employeeDevelopment->salaries()->create([
+            'emp_no' => $employeeDevelopment->emp_no,
+            'salary' => $faker->numberBetween(1500, 3000),
+            'from_date' => $faker->dateTimeBetween('-5 years'),
+            'to_date' => $faker->dateTimeBetween('-1 years'),
+        ]);
+
         $employeeDevelopment->departmentsEmployees()
             ->attach('d005', [
                 'from_date' => $faker->dateTimeBetween('-5 years'),
@@ -126,6 +141,7 @@ class EmployeeControllerTest extends \TestCase
 
         $search_response->assertResponseStatus(200);
         $decoded_search_res = json_decode($search_response->response->getContent());
+
         $users = collect($decoded_search_res->data)->pluck(['last_name'])->toArray();
         $this->assertEquals(count(array_diff($users, ['Gates', 'Wozniak', 'Bogard'])), 0);
         $this->assertEquals($decoded_search_res->meta->total, 3);

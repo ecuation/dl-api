@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS dept_emp (
 
 DROP TABLE IF EXISTS titles;
 CREATE TABLE IF NOT EXISTS titles (
-    emp_no      INT             NOT NULL auto_increment,
+    emp_no      INT             NOT NULL,
     title       VARCHAR(50)     NOT NULL,
     from_date   DATE            NOT NULL,
     to_date     DATE,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS titles (
 
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE IF NOT EXISTS salaries (
-    emp_no      INT             NOT NULL auto_increment,
+    emp_no      INT             NOT NULL,
     salary      INT             NOT NULL,
     from_date   DATE            NOT NULL,
     to_date     DATE            NOT NULL,

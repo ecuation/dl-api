@@ -10,7 +10,11 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-use App\Http\Resources\EmployeeResource;
+$router->get('/', function () use ($router) {
+    $employee = \App\Employee::first()->salaries;
+    dd($employee);
+});
+
 $router->group(['prefix' => 'v1/api'], function() use (&$router)
 {
     $router->post('/signup', [
