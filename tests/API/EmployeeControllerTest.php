@@ -9,6 +9,7 @@ use App\Employee;
 use App\OauthClient;
 use App\Repositories\EmployeeRepo;
 use Carbon\Carbon;
+use Faker\Factory;
 
 class EmployeeControllerTest extends \TestCase
 {
@@ -30,66 +31,95 @@ class EmployeeControllerTest extends \TestCase
 
     public function mockEmployees()
     {
+        $this->mockCustomerServicesEmployees();
+        $this->mockDevelopmentEmployees();
+    }
+
+    public function mockCustomerServicesEmployees()
+    {
+        $faker = Factory::create();
         $employeeCustomerServices = factory(\App\Employee::class)->create();
         $employeeCustomerServices->departmentsEmployees()->attach('d009', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
 
+        foreach (range(1, 100) as $item)
+        {
+            $employeeCustomerServices = factory(\App\Employee::class)->create();
+            $employeeCustomerServices->departmentsEmployees()->attach('d009',
+                ['from_date' => $faker->dateTimeBetween('-5 years'), 'to_date' => $faker->dateTimeBetween('- years')]);
+        }
+    }
+
+    public function mockDevelopmentEmployees()
+    {
+        $faker = Factory::create();
         $employeeDevelopment = factory(\App\Employee::class)->create([
             'first_name' => 'Bill',
             'last_name' => 'Gates'
         ]);
-        $employeeDevelopment->departmentsEmployees()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+        $employeeDevelopment->departmentsEmployees()
+            ->attach('d005', [
+                'from_date' => $faker->dateTimeBetween('-5 years'),
+                'to_date' => $faker->dateTimeBetween('-1 years')
+            ]);
 
         $employeeDevelopment = factory(\App\Employee::class)->create([
             'first_name' => 'Steve',
             'last_name' => 'Wozniak'
         ]);
-        $employeeDevelopment->departmentsEmployees()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+        $employeeDevelopment->departmentsEmployees()
+            ->attach('d005', [
+                'from_date' => $faker->dateTimeBetween('-5 years'),
+                'to_date' => $faker->dateTimeBetween('-1 years')
+            ]);
+
+        $employeeDevelopment = factory(\App\Employee::class)->create([
+            'first_name' => 'Terry',
+            'last_name' => 'Bogard'
+        ]);
+        $employeeDevelopment->departmentsEmployees()
+            ->attach('d005', [
+                'from_date' => $faker->dateTimeBetween('-5 years'),
+                'to_date' => $faker->dateTimeBetween('-1 years')
+            ]);
     }
 
     public function mockManagers()
     {
         $managerCustomerServices = factory(\App\Employee::class)->create();
-        $managerCustomerServices->departmentsMangers()->attach('d009', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+        $customerServicesDepartment = Department::where('dept_name', 'Customer Services')->first();
+        $managerCustomerServices->departmentsMangers()
+            ->attach($customerServicesDepartment->dept_no, [
+                'from_date' => Carbon::yesterday(),
+                'to_date' => Carbon::now()
+            ]);
 
         $managerDevelopment = factory(\App\Employee::class)->create();
-        $managerDevelopment->departmentsMangers()->attach('d005', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+        $developmentDepartment = Department::where('dept_name', 'Development')->first();
+        $managerDevelopment->departmentsMangers()
+            ->attach($developmentDepartment->dept_no, [
+                'from_date' => Carbon::yesterday(),
+                'to_date' => Carbon::now()
+            ]);
 
         return compact('managerCustomerServices', 'managerDevelopment');
-
     }
 
     public function testSearchEmployees()
     {
-        $this->createMainUser();
+        $main_user = $this->createMainUser();
         $this->mockDepartments();
         $this->mockEmployees();
         $managers = $this->mockManagers();
-        $oauth_client = OauthClient::find(2);
 
-        $body = [
-            'username' => $this->main_user_test['email'],
-            'password' => $this->main_user_test['password'],
-            'client_id' => $oauth_client->id,
-            'client_secret' => $oauth_client->secret,
-            'grant_type' => 'password',
-            'scope' => '*'
-        ];
-
-        $response = $this->json('POST','v1/oauth/token', $body, [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json'
-        ]);
-
-        $decoded_res = json_decode($response->response->getContent());
         $search_response = $this->json('GET', route('employees.index'), ['manager_no' => $managers['managerDevelopment']->emp_no], [
             'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $decoded_res->access_token
+            'Authorization' => 'Bearer ' . $main_user['token']
         ]);
 
         $search_response->assertResponseStatus(200);
-
         $decoded_search_res = json_decode($search_response->response->getContent());
-
-        $this->assertEquals($decoded_search_res->meta->total, 2);
+        $users = collect($decoded_search_res->data)->pluck(['last_name'])->toArray();
+        $this->assertEquals(count(array_diff($users, ['Gates', 'Wozniak', 'Bogard'])), 0);
+        $this->assertEquals($decoded_search_res->meta->total, 3);
     }
 }

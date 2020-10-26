@@ -29,13 +29,11 @@ class AuthController extends Controller
         ]);
         $user->save();
 
-        $data['token'] =  $user->createToken('docline')->accessToken;
-        $data['first_name'] =  $user->first_name;
-        $data['last_name'] =  $user->last_name;
-
+        $token =  $user->createToken('docline')->accessToken;
 
         return response()->json([
             'user' => new UserResource($user),
+            'token' => $token,
             'message' => 'Successfully created user!'
         ], 201);
     }

@@ -44,6 +44,9 @@ abstract class TestCase extends BaseTestCase
             'Accept' => 'application/json'
         ]);
 
-        return $response;
+        return [
+            'response' => $response,
+            'token' => json_decode($response->response->getContent())->token
+        ];
     }
 }

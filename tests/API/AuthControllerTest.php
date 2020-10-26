@@ -11,10 +11,10 @@ class AuthControllerTest extends \TestCase
     public function testRegister()
     {
         $response = $this->createMainUser();
-
-        $response->assertResponseStatus(201);
-        $this->assertEquals($response->response->original['user']->email, $this->main_user_test['email']);
-        $response->seeJsonStructure([
+        $response['response']->assertResponseStatus(201);
+        
+        $this->assertEquals($response['response']->response->original['user']->email, $this->main_user_test['email']);
+        $response['response']->seeJsonStructure([
             'user',
             'message',
         ]);
