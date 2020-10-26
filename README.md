@@ -8,7 +8,6 @@ Download project, install dependencies with composer and db migrations .
 $ git clone git@github.com:ecuation/docline-api.git docline-api.development
 $ cd docline-api.development
 $ composer install
-$ cp .env.example ./.env
 ```
 
 Copy .env file into the project and setup the necessary project and DB connection environment variables

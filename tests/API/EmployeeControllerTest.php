@@ -87,7 +87,9 @@ class EmployeeControllerTest extends \TestCase
 
     public function mockManagers()
     {
-        $managerCustomerServices = factory(\App\Employee::class)->create();
+        $managerCustomerServices = factory(\App\Employee::class)->create([
+            'first_name' => 'Manager 1'
+        ]);
         $customerServicesDepartment = Department::where('dept_name', 'Customer Services')->first();
         $managerCustomerServices->departmentsMangers()
             ->attach($customerServicesDepartment->dept_no, [
@@ -95,7 +97,9 @@ class EmployeeControllerTest extends \TestCase
                 'to_date' => Carbon::now()
             ]);
 
-        $managerDevelopment = factory(\App\Employee::class)->create();
+        $managerDevelopment = factory(\App\Employee::class)->create([
+            'first_name' => 'Manager 2'
+        ]);
         $developmentDepartment = Department::where('dept_name', 'Development')->first();
         $managerDevelopment->departmentsMangers()
             ->attach($developmentDepartment->dept_no, [
@@ -125,5 +129,27 @@ class EmployeeControllerTest extends \TestCase
         $users = collect($decoded_search_res->data)->pluck(['last_name'])->toArray();
         $this->assertEquals(count(array_diff($users, ['Gates', 'Wozniak', 'Bogard'])), 0);
         $this->assertEquals($decoded_search_res->meta->total, 3);
+    }
+
+
+    public function testGetManagers()
+    {
+        $main_user = $this->createMainUser();
+        $this->mockDepartments();
+        $this->mockEmployees();
+        $managers = $this->mockManagers();
+
+        $manager_response = $this->json(
+            'GET',
+            route('employees.getManagers'), [], [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $main_user['token']
+            ]);
+
+        $manager_response->assertResponseStatus(200);
+        $decoded_managers_res = json_decode($manager_response->response->getContent());
+        $users = collect($decoded_managers_res->data)->pluck(['first_name'])->toArray();
+
+        $this->assertEquals(count(array_diff($users, ['Manager 1', 'Manager 2'])), 0);
     }
 }
