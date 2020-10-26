@@ -3,13 +3,14 @@
 
 namespace App;
 
-
-use App\Salary;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Employee extends Model
 {
+    //use QueryCacheable;
+    protected $cacheFor = 180;
+
     protected $table = 'employees';
 
     protected $primaryKey = 'emp_no';

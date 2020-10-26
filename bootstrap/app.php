@@ -47,6 +47,8 @@ $app->register(\Thedevsaddam\LumenRouteList\LumenRouteListServiceProvider::class
 $app->register(\KitLoong\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
 $app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->configure('cors');
+$app->register(Illuminate\Redis\RedisServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
