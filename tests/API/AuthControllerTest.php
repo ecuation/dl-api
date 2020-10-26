@@ -12,7 +12,7 @@ class AuthControllerTest extends \TestCase
     {
         $response = $this->createMainUser();
         $response['response']->assertResponseStatus(201);
-        
+
         $this->assertEquals($response['response']->response->original['user']->email, $this->main_user_test['email']);
         $response['response']->seeJsonStructure([
             'user',

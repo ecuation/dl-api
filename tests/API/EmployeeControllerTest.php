@@ -39,13 +39,18 @@ class EmployeeControllerTest extends \TestCase
     {
         $faker = Factory::create();
         $employeeCustomerServices = factory(\App\Employee::class)->create();
-        $employeeCustomerServices->departmentsEmployees()->attach('d009', ['from_date' => Carbon::yesterday(), 'to_date' => Carbon::now()]);
+        $employeeCustomerServices->departmentsEmployees()->attach('d009', [
+            'from_date' => Carbon::yesterday(),
+            'to_date' => Carbon::now()
+        ]);
 
         foreach (range(1, 100) as $item)
         {
             $employeeCustomerServices = factory(\App\Employee::class)->create();
             $employeeCustomerServices->departmentsEmployees()->attach('d009',
-                ['from_date' => $faker->dateTimeBetween('-5 years'), 'to_date' => $faker->dateTimeBetween('- years')]);
+                ['from_date' => $faker->dateTimeBetween('-5 years'),
+                    'to_date' => $faker->dateTimeBetween('- years')
+                ]);
         }
     }
 
@@ -111,9 +116,11 @@ class EmployeeControllerTest extends \TestCase
         $this->mockEmployees();
         $managers = $this->mockManagers();
 
-        $search_response = $this->json('GET', route('employees.index'), ['manager_no' => $managers['managerDevelopment']->emp_no], [
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $main_user['token']
+        $search_response = $this->json(
+            'GET',
+            route('employees.index'), [
+                'manager_no' => $managers['managerDevelopment']->emp_no
+            ], ['Accept' => 'application/json', 'Authorization' => 'Bearer ' . $main_user['token']
         ]);
 
         $search_response->assertResponseStatus(200);
