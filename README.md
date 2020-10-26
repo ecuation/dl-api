@@ -26,7 +26,7 @@ $ cd database/db_dump
 $ mysql -u yourDbUserName -p youDatabaseName < employees.sql
 ```
 
-Install Laravel Passport
+Install Laravel Passport (run this command in the root project directory)
 
 ```sh
 $ php artisan passport:install
