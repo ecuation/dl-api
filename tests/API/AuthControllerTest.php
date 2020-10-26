@@ -33,7 +33,7 @@ class AuthControllerTest extends \TestCase
             'scope' => '*'
         ];
 
-        $response = $this->json('POST','v1/oauth/token', $body, ['Accept' => 'application/json']);
+        $response = $this->json('POST','v1/api/oauth/token', $body, ['Accept' => 'application/json']);
         $response->assertResponseStatus(200);
 
         $response->seeJsonStructure([

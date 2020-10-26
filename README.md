@@ -40,9 +40,9 @@ Password grant client created successfully.
 Client ID: 2
 Client secret: gOV3kfHdI2t6soli5Fhi3n16AqgrAwcTU8Ip2e1G
 ```
-Save credentials in your clipboard from the client with the ID: 2 
+Note: Save the above credentials in your clipboard from the client with the ID: 2 
 (You will need these credentials to set it in your .env frontend project file
-in order to make the Client->API connection)
+in order to make the correct Client->API connection)
 
 ## License
 
