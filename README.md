@@ -5,8 +5,8 @@ Simple API technical test using a prebuild MySQL database schema and data.
 
 Download project, install dependencies with composer and db migrations .
 ```sh
-$ git clone git@github.com:ecuation/docline-api.git docline-api.development
-$ cd docline-api.development
+$ git clone git@github.com:ecuation/dl-api.git quasar-api.development
+$ cd quasar-api.development
 $ composer install
 ```
 
