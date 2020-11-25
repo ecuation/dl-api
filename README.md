@@ -1,12 +1,12 @@
-# Quasar API with Lumen (Laravel microframework)
+# Laravel API with Lumen (Laravel microframework)
 
 Simple API technical test using a prebuild MySQL database schema and data.
 ### Installation
 
 Download project, install dependencies with composer and db migrations .
 ```sh
-$ git clone git@github.com:ecuation/dl-api.git quasar-api.development
-$ cd quasar-api.development
+$ git clone git@github.com:ecuation/dl-api.git dl-api.development
+$ cd dl-api.development
 $ composer install
 ```
 
