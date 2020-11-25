@@ -1,4 +1,4 @@
-# Docline API with Lumen (Laravel microframework)
+# Quasar API with Lumen (Laravel microframework)
 
 Simple API technical test using a prebuild MySQL database schema and data.
 ### Installation
